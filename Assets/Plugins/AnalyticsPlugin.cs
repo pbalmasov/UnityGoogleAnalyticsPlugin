@@ -3,12 +3,13 @@ using System.Collections;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
+public class AnalyticsPlugin : MonoBehaviour
+{
 
-public class AnalyticsPlugin : MonoBehaviour {
-
-	//replace with you own TRACKING_ID
-	public string TRACKING_ID = "UA-XXXXXXXX-X";
-
+		//replace with you own TRACKING_ID
+		public string TRACKING_ID = "UA-XXXXXXXX-X";
+	
+	#if DEBUG
 	void OnGUI ()
 	{
 		if (GUI.Button(new Rect(0,0,200,200), "SendEvent"))
@@ -16,14 +17,27 @@ public class AnalyticsPlugin : MonoBehaviour {
 			LogEvent("Main","HomeScreen","open","1");
 		}
 	}
+	#endif
 	
-	void Start () {
-		StartSession();
+		void Start ()
+		{
+				StartSession ();
+		}
+	#if UNITY_EDITOR
+	
+	public void StartSession()
+	{
+		Debug.Log(TRACKING_ID);
 	}
 	
-	#if UNITY_ANDROID
-	private AndroidJavaClass mGoogleAnalyticsClass;
-	private AndroidJavaClass GA
+	public static void LogEvent (string category, string action,string label = null, string value = null)
+	{
+		Debug.Log("Category "+category+", action "+action+", label "+label+", value "+value);
+	}
+
+	#elif UNITY_ANDROID
+	private static AndroidJavaClass mGoogleAnalyticsClass;
+	private static AndroidJavaClass GA
 	{
 		get
 		{
@@ -75,17 +89,6 @@ public class AnalyticsPlugin : MonoBehaviour {
 	public void LogEvent(string category, string action,string label = null, string value = null)
 	{
 		GoogleAnalytics_logEvent(category,action,label,value);
-	}
-	
-	#else
-	public void StartSession()
-	{
-		Debug.Log(TRACKING_ID);
-	}
-	
-	public static void LogEvent (string category, string action,string label = null, string value = null)
-	{
-		Debug.Log(category,action,label,value);
 	}
 	#endif
 }
