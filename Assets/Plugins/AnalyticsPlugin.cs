@@ -50,7 +50,7 @@ public class AnalyticsPlugin : MonoBehaviour {
 	}
 	
 	
-	public void LogEvent (string category, string action,string label = null, string value = null)
+	public static void LogEvent (string category, string action,string label = null, string value = null)
 	{
 		GA.CallStatic("GoogleAnalytics_logEventWithParameters", category, action, label, value);
 	}
@@ -83,7 +83,7 @@ public class AnalyticsPlugin : MonoBehaviour {
 		Debug.Log(TRACKING_ID);
 	}
 	
-	public void LogEvent (string category, string action,string label = null, string value = null)
+	public static void LogEvent (string category, string action,string label = null, string value = null)
 	{
 		Debug.Log(category,action,label,value);
 	}
